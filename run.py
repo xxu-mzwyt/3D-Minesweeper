@@ -3,8 +3,8 @@ import random
 board = []
 display = []
 
-board_size = 5
-mine_num = 10
+board_size = 3
+mine_num = 5
 
 mine_cnt = 0
 
@@ -57,14 +57,24 @@ def init():
             update_num(randx, randy, randz)
 
 def show_display():
-
-    for i in range(board_size):
-        print("Layer" + str(i) + ":")
-        for j in range(board_size):
-            for k in range(board_size):
-                print(display[i][j][k] + ' ', end='')
-            print()
     print()
+    for i in range(board_size):
+        # print("Layer" + str(i) + ":")
+        # for j in range(board_size + 1):
+        #     print(' ', end='')
+        # for j in range(board_size + 2):
+        #     print('-', end='')
+        # print()
+        for j in range(board_size):
+            for k in range(board_size - j):
+                print(' ', end='')
+            print('/', end='')
+            for k in range(board_size):
+                print(display[i][j][k], end='')
+            print('/')
+        for j in range(board_size + 2):
+            print('--', end='')
+        print()
 
 def play():
 
@@ -91,7 +101,7 @@ def play():
             return
 
         if board[tarx][tary][tarz] == -1:
-            mine_cnt = -1
+            mine_cnt = -1  # That's not an error. If you are revealing an cell with a mine, -1 means you lose.
             return
         else:
             reveal(tarx, tary, tarz)
@@ -116,10 +126,14 @@ def play():
     while mine_cnt > 0:
         show_display()
         comm = input().split(' ')
-        if comm[0] == 'l':
+        if len(comm) != 4:
+            print('Error')
+
+        elif comm[0] == 'l':
             left_click(int(comm[1]), int(comm[2]), int(comm[3]))
         elif comm[0] == 'r':
             right_click(int(comm[1]), int(comm[2]), int(comm[3]))
+
         else:
             print("Error")
 
